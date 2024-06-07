@@ -3,6 +3,8 @@ import Dashboard, { dashboardLoader } from "./pages/Dashboard";
 import Error from "./pages/Error";
 // Layouts
 import Main, { mainLoader } from "./layouts/Main";
+// actions
+import { logoutAction } from "./actions/logout";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,10 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         loader: dashboardLoader,
         errorElement: <Error />,
+      },
+      {
+        path: "logout",
+        action: logoutAction,
       },
     ],
   },
