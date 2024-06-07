@@ -1,7 +1,7 @@
 import React from "react";
 
-const Nav = () => {
-  return <nav>Nav</nav>;
+const Nav = ({ userName }) => {
+  return <nav>{userName}</nav>;
 };
 
 export default Nav;
