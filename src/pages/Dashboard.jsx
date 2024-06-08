@@ -20,7 +20,6 @@ export async function dashboardAction({ request }) {
   const data = await request.formData();
   // const userName = data.get("userName")
   const { _action, ...values } = Object.fromEntries(data);
-  console.log(_action);
 
   if (_action === "newUser") {
     try {
@@ -33,7 +32,7 @@ export async function dashboardAction({ request }) {
 
   if (_action === "createBudget") {
     try {
-      createBudget({name:values.newBudget,amount:values.newBudgetAmount})
+      createBudget({ name: values.newBudget, amount: values.newBudgetAmount });
       return toast.success("Budget created");
     } catch (error) {
       throw new Error("There was a problem creating your budget.");

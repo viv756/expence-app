@@ -1,7 +1,7 @@
 const generateRandomColor = () => {
   const existinBudgetsLength = fetchdata("budgets")?.length ?? 0;
 
-  return `${existinBudgetsLength +34} 65% 50%`
+  return `${existinBudgetsLength + 34} 65% 50%`;
 };
 
 // Loacl Storage
