@@ -3,7 +3,7 @@ import { Form } from "react-router-dom";
 // library
 import { UserPlusIcon } from "@heroicons/react/24/solid";
 // assets
-import illustration from '../assets/illustration.jpg'
+import illustration from "../assets/illustration.jpg";
 
 const Intro = () => {
   return (
@@ -14,6 +14,7 @@ const Intro = () => {
         </h1>
         <p>Personal budgeting is the secret to financial freedom. Start your journey today</p>
         <Form method="post">
+          <input type="hidden" name="_action" value="newUser" />
           <input
             type="text"
             name="userName"
