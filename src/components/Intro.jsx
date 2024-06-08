@@ -14,6 +14,7 @@ const Intro = () => {
         </h1>
         <p>Personal budgeting is the secret to financial freedom. Start your journey today</p>
         <Form method="post">
+          <input type="hidden" name="_action" value="newUser" />
           <input
             type="text"
             name="userName"

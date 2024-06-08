@@ -3,30 +3,41 @@ import { useLoaderData } from "react-router-dom";
 import Intro from "../components/Intro";
 import AddBudgetForm from "../components/AddBudgetForm";
 // helper functions
-import { fetchdata } from "../helpers";
+import { createBudget, fetchdata } from "../helpers";
 // Library
 import { toast } from "react-toastify";
-
 
 // Loader
 export function dashboardLoader() {
   const userName = fetchdata("userName");
-  const budjets = fetchdata("budgets");
+  const budgets = fetchdata("budgets");
 
-  return { userName, budjets };
+  return { userName, budgets };
 }
 
 // action
 export async function dashboardAction({ request }) {
   const data = await request.formData();
   // const userName = data.get("userName")
-  const formData = Object.fromEntries(data);
+  const { _action, ...values } = Object.fromEntries(data);
+  console.log(_action);
 
-  try {
-    localStorage.setItem("userName", JSON.stringify(formData.userName));
-    return toast.success(`Welcome, ${formData.userName}`);
-  } catch (e) {
-    throw new Error("There was a problem creating your account");
+  if (_action === "newUser") {
+    try {
+      localStorage.setItem("userName", JSON.stringify(values.userName));
+      return toast.success(`Welcome, ${values.userName}`);
+    } catch (e) {
+      throw new Error("There was a problem creating your account");
+    }
+  }
+
+  if (_action === "createBudget") {
+    try {
+      createBudget({name:values.newBudget,amount:values.newBudgetAmount})
+      return toast.success("Budget created");
+    } catch (error) {
+      throw new Error("There was a problem creating your budget.");
+    }
   }
 }
 const Dashboard = () => {
