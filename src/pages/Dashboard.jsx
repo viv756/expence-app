@@ -3,9 +3,10 @@ import { useLoaderData } from "react-router-dom";
 import Intro from "../components/Intro";
 import AddBudgetForm from "../components/AddBudgetForm";
 // helper functions
-import { createBudget, fetchdata, waait } from "../helpers";
+import { createBudget, createExpence, fetchdata, waait } from "../helpers";
 // Library
 import { toast } from "react-toastify";
+import AddExpenceForm from "../components/AddExpenceForm";
 
 // Loader
 export function dashboardLoader() {
@@ -39,6 +40,15 @@ export async function dashboardAction({ request }) {
       throw new Error("There was a problem creating your budget.");
     }
   }
+
+  if (_action === "createExpence") {
+    try {
+      createExpence({name:values.newExpence,amount:values.newExpenceAmount,budgetId:values.newExpenceBudget})
+      return toast.success(`Expence ${values.newExpence} created`);
+    } catch (error) {
+      throw new Error("There was a problem creating your expence.");
+    }
+  }
 }
 const Dashboard = () => {
   const { userName, budgets } = useLoaderData();
@@ -50,12 +60,26 @@ const Dashboard = () => {
             Welcome back,<span className="accent">{userName}</span>
           </h1>
           <div className="grid-sm">
-            {/* {budjets}?():()*/}
-            <div className="grid-lg">
-              <div className="flex-lg">
-                <AddBudgetForm />
-              </div>
-            </div>
+            {budgets && budgets.length > 0 ? (
+              <>
+                {" "}
+                <div className="grid-lg">
+                  <div className="flex-lg">
+                    <AddBudgetForm />
+                    <AddExpenceForm budgets={ budgets }/>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                {" "}
+                <div className="grid-sm">
+                  <p>personal budgeting is the secret to financial freedom.</p>
+                  <p>Create a budget to get started!</p>
+                  </div>
+                  <AddBudgetForm />
+              </>
+            )}
           </div>
         </div>
       ) : (
