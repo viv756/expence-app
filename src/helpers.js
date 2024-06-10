@@ -4,9 +4,9 @@ export const waait = () => {
 
 // color
 const generateRandomColor = () => {
-  const existingBudgetsLength = fetchdata("budgets")?.length ?? 0;
+  const existinBudgetsLength = fetchdata("budgets")?.length ?? 0;
 
-  return `${existingBudgetsLength + 34}, 65%, 50%`;
+  return `${existinBudgetsLength + 34} 65% 50%`;
 };
 
 // Loacl Storage
@@ -58,7 +58,9 @@ export const calculateSpentByBudget = (budgetId) => {
 };
 
 // Formating
-
+export const formatDateToLocaleString = (epoch) => {
+  return new Date(epoch).toLocaleDateString()
+}
 // formating percentage
 export const formatPercenteage = (amt) => {
   return amt.toLocaleString(undefined, {
