@@ -14,6 +14,22 @@ export const fetchdata = (key) => {
   return JSON.parse(localStorage.getItem(key));
 };
 
+export const getAllMatchingItems = ({ category, key, value }) => {
+  const data = fetchdata(category) ?? [];
+
+  return data.filter((item) => item[key] === value);
+};
+
+// delete item
+export const deleteItem = ({ key, id }) => {
+  const existingData = fetchdata(key)
+  if (id) {
+    const newData = existingData.filter((item) => item.id !== id)
+    return localStorage.setItem(key,JSON.stringify(newData))
+  }
+  return localStorage.removeItem(key)
+}
+
 // create budget
 export const createBudget = ({ name, amount }) => {
   const newItem = {
@@ -40,10 +56,6 @@ export const createExpence = ({ name, amount, budgetId }) => {
   const existingExpences = fetchdata("expences") ?? [];
   return localStorage.setItem("expences", JSON.stringify([...existingExpences, newItem]));
 };
-// delete item
-export const deleteItem = ({ key }) => {
-  return localStorage.removeItem(key);
-};
 
 // total spent by budget
 export const calculateSpentByBudget = (budgetId) => {
@@ -59,8 +71,8 @@ export const calculateSpentByBudget = (budgetId) => {
 
 // Formating
 export const formatDateToLocaleString = (epoch) => {
-  return new Date(epoch).toLocaleDateString()
-}
+  return new Date(epoch).toLocaleDateString();
+};
 // formating percentage
 export const formatPercenteage = (amt) => {
   return amt.toLocaleString(undefined, {

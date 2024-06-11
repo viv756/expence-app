@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Dashboard, { dashboardAction, dashboardLoader } from "./pages/Dashboard";
-import ExpencesPage, { expencesLoader } from "./pages/ExpencesPage";
+import ExpencesPage, { expenceAction, expencesLoader } from "./pages/ExpencesPage";
 import Error from "./pages/Error";
 // library
 import { ToastContainer } from "react-toastify";
@@ -28,6 +28,7 @@ const router = createBrowserRouter([
         path: "expences",
         element: <ExpencesPage />,
         loader: expencesLoader,
+        action:expenceAction
       },
       {
         path: "logout",

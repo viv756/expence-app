@@ -3,7 +3,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import Intro from "../components/Intro";
 import AddBudgetForm from "../components/AddBudgetForm";
 // helper functions
-import { createBudget, createExpence, fetchdata, waait } from "../helpers";
+import { createBudget, createExpence, deleteItem, fetchdata, waait } from "../helpers";
 // Library
 import { toast } from "react-toastify";
 import AddExpenceForm from "../components/AddExpenceForm";
@@ -54,6 +54,17 @@ export async function dashboardAction({ request }) {
       throw new Error("There was a problem creating your expence.");
     }
   }
+  if (_action === "deleteExpence") {
+    try {
+      deleteItem({
+        key: "expences",
+        id: values.expenceId,
+      });
+      return toast.success("Expence deleted!");
+    } catch (error) {
+      throw new Error("There was a problem deleting your expence.");
+    }
+  }
 }
 const Dashboard = () => {
   const { userName, budgets, expences } = useLoaderData();
@@ -83,7 +94,9 @@ const Dashboard = () => {
                     <div className="grid-md">
                       <h2> Recent Expences</h2>
                       <Table expences={expences.sort((a, b) => b.createdAt - a.createdAt).slice(0, 8)} />
-                      <Link to="expences" className="btn btn--dark">View all expences</Link>
+                      <Link to="expences" className="btn btn--dark">
+                        View all expences
+                      </Link>
                     </div>
                   )}
                 </div>
