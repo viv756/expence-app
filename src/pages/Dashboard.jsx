@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 // components
 import Intro from "../components/Intro";
 import AddBudgetForm from "../components/AddBudgetForm";
@@ -15,7 +15,7 @@ export function dashboardLoader() {
   const userName = fetchdata("userName");
   const budgets = fetchdata("budgets");
   const expences = fetchdata("expences");
-  
+
   return { userName, budgets, expences };
 }
 
@@ -82,7 +82,8 @@ const Dashboard = () => {
                   {expences && expences.length > 0 && (
                     <div className="grid-md">
                       <h2> Recent Expences</h2>
-                      <Table expences={expences.sort((a,b)=> b.createdAt - a.createdAt) } />
+                      <Table expences={expences.sort((a, b) => b.createdAt - a.createdAt).slice(0, 8)} />
+                      <Link to="expences" className="btn btn--dark">View all expences</Link>
                     </div>
                   )}
                 </div>
