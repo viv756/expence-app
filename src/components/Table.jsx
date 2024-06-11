@@ -2,7 +2,6 @@ import React from "react";
 import ExpenceItem from "./ExpenceItem";
 
 const Table = ({ expences }) => {
-
   return (
     <div className="table">
       <table>
