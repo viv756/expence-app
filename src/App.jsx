@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Main, { mainLoader } from "./layouts/Main";
 // actions
 import { logoutAction } from "./actions/logout";
+import BudgetPage, { budgetAction, budgetLoader } from "./pages/BudgetPage";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,15 @@ const router = createBrowserRouter([
         path: "expences",
         element: <ExpencesPage />,
         loader: expencesLoader,
-        action:expenceAction
+        action: expenceAction,
+        errorElement: <Error />,
+      },
+      {
+        path: "budget/:id",
+        element: <BudgetPage/>,
+        loader: budgetLoader,
+        action:budgetAction,
+        errorElement: <Error />,
       },
       {
         path: "logout",

@@ -1,13 +1,13 @@
 import React from "react";
 import ExpenceItem from "./ExpenceItem";
 
-const Table = ({ expences }) => {
+const Table = ({ expences,showBudget = true }) => {
   return (
     <div className="table">
       <table>
         <thead>
           <tr>
-            {["Name", "Amount", "Date","Budget", ""].map((i, index) => (
+            {["Name", "Amount", "Date",showBudget ? "Budget":"", ""].map((i, index) => (
               <th key={index}> {i}</th>
             ))}
           </tr>
@@ -15,7 +15,7 @@ const Table = ({ expences }) => {
         <tbody>
           {expences.map((expence) => (
             <tr key={expence.id}>
-              <ExpenceItem expence={expence} />
+              <ExpenceItem expence={expence} showBudget={showBudget } />
             </tr>
           ))}
         </tbody>
