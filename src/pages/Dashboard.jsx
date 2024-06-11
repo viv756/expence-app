@@ -1,25 +1,30 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 // components
 import Intro from "../components/Intro";
 import AddBudgetForm from "../components/AddBudgetForm";
 // helper functions
-import { createBudget, createExpence, fetchdata, waait } from "../helpers";
+import { createBudget, createExpence, deleteItem, fetchdata, waait } from "../helpers";
 // Library
 import { toast } from "react-toastify";
 import AddExpenceForm from "../components/AddExpenceForm";
+import BudgetItem from "../components/BudgetItem";
+import Table from "../components/Table";
 
 // Loader
 export function dashboardLoader() {
   const userName = fetchdata("userName");
   const budgets = fetchdata("budgets");
+  const expences = fetchdata("expences");
 
-  return { userName, budgets };
+  return { userName, budgets, expences };
 }
 
 // action
 export async function dashboardAction({ request }) {
   await waait();
+
   const data = await request.formData();
+
   // const userName = data.get("userName")
   const { _action, ...values } = Object.fromEntries(data);
 
@@ -43,15 +48,26 @@ export async function dashboardAction({ request }) {
 
   if (_action === "createExpence") {
     try {
-      createExpence({name:values.newExpence,amount:values.newExpenceAmount,budgetId:values.newExpenceBudget})
+      createExpence({ name: values.newExpence, amount: values.newExpenceAmount, budgetId: values.newExpenceBudget });
       return toast.success(`Expence ${values.newExpence} created`);
     } catch (error) {
       throw new Error("There was a problem creating your expence.");
     }
   }
+  if (_action === "deleteExpence") {
+    try {
+      deleteItem({
+        key: "expences",
+        id: values.expenceId,
+      });
+      return toast.success("Expence deleted!");
+    } catch (error) {
+      throw new Error("There was a problem deleting your expence.");
+    }
+  }
 }
 const Dashboard = () => {
-  const { userName, budgets } = useLoaderData();
+  const { userName, budgets, expences } = useLoaderData();
   return (
     <>
       {userName ? (
@@ -66,8 +82,23 @@ const Dashboard = () => {
                 <div className="grid-lg">
                   <div className="flex-lg">
                     <AddBudgetForm />
-                    <AddExpenceForm budgets={ budgets }/>
+                    <AddExpenceForm budgets={budgets} />
                   </div>
+                  <h2>Existing Budgets</h2>
+                  <div className="budgets">
+                    {budgets.map((budget) => (
+                      <BudgetItem key={budget.id} budget={budget} />
+                    ))}
+                  </div>
+                  {expences && expences.length > 0 && (
+                    <div className="grid-md">
+                      <h2> Recent Expences</h2>
+                      <Table expences={expences.sort((a, b) => b.createdAt - a.createdAt).slice(0, 8)} />
+                      <Link to="expences" className="btn btn--dark">
+                        View all expences
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (
@@ -76,8 +107,8 @@ const Dashboard = () => {
                 <div className="grid-sm">
                   <p>personal budgeting is the secret to financial freedom.</p>
                   <p>Create a budget to get started!</p>
-                  </div>
-                  <AddBudgetForm />
+                </div>
+                <AddBudgetForm />
               </>
             )}
           </div>
